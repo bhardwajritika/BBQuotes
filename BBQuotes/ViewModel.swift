@@ -38,4 +38,19 @@ class ViewModel {
         
     }
     
+    func getData(from show: String) async {
+        status = .fetching
+        
+        do {
+            quotes = try await fetcher.fetchQuote(from: show)
+            character = try await fetcher.fetchCharacter(quotes.character)
+            character.death = try await fetcher.fetchDeath(for: character.name)
+            status = .success
+        } catch {
+            status = .failure(error: error)
+        }
+        
+    }
+
+    
 }
