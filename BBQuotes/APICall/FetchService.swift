@@ -9,11 +9,11 @@ import Foundation
 
 struct FetchService {
     
-    enum FetchError: Error {
+    private enum FetchError: Error {
         case invalidResponse
     }
     
-    let baseURL = URL(string: "https://breaking-bad-api-six.vercel.app/api")!
+    private let baseURL = URL(string: "https://breaking-bad-api-six.vercel.app/api")!
     
     
     
