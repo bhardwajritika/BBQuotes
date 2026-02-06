@@ -19,9 +19,13 @@ struct QuoteView: View {
                     .resizable()
                     .frame(width: geo.size.width * 2.7, height: geo.size.height * 1.2)
                 
+                
                 VStack {
+                    Spacer(minLength: 60)
+                    
                     // quote text
                     Text("  \" \(vm.quotes.quote) \"   ")
+                        .minimumScaleFactor(0.5)
                         .multilineTextAlignment(.center)
                         .padding()
                         .foregroundStyle(.white)
@@ -51,9 +55,23 @@ struct QuoteView: View {
                     .frame(width: geo.size.width / 1.1, height: geo.size.height / 1.8)
                     .clipShape(.rect(cornerRadius: 50))
                     
+                    Spacer()
                     // button
-        
-                }.frame(width: geo.size.width)
+                    Button {
+                        Task {
+                            await vm.getData(from: show)
+                        }
+                    } label: {
+                        Text("Get Random Quotes")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(.breakingBadGreen)
+                            .shadow(color: .breakingBadYellow, radius: 5)
+                            .clipShape(.rect(cornerRadius: 8))
+                    }
+                    
+                    Spacer(minLength: 95)
+                }.frame(width: geo.size.width, height: geo.size.height)
             }
             .frame(width: geo.size.width, height: geo.size.height)
             
