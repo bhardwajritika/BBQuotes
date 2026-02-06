@@ -19,43 +19,52 @@ struct QuoteView: View {
                     .resizable()
                     .frame(width: geo.size.width * 2.7, height: geo.size.height * 1.2)
                 
-                
                 VStack {
-                    Spacer(minLength: 60)
-                    
-                    // quote text
-                    Text("  \" \(vm.quotes.quote) \"   ")
-                        .minimumScaleFactor(0.5)
-                        .multilineTextAlignment(.center)
-                        .padding()
-                        .foregroundStyle(.white)
-                        .background(Color.black.opacity(0.5))
-                        .clipShape(.rect(cornerRadius: 25))
-                        .padding(.horizontal)
-                    
-                    ZStack(alignment: .bottom) {
-                        // character image
-                        AsyncImage(url: vm.character.images[0]) {
-                            Image in
-                            Image
-                                .resizable()
-                                .scaledToFill()
-                        } placeholder: {
+                    VStack {
+                        Spacer(minLength: 60)
+                        
+                        switch vm.status {
+                        case .notStarted:
+                            EmptyView()
+                        case .fetching:
                             ProgressView()
+                        case .success:
+                            Text("  \" \(vm.quotes.quote) \"   ")
+                                .minimumScaleFactor(0.5)
+                                .multilineTextAlignment(.center)
+                                .padding()
+                                .foregroundStyle(.white)
+                                .background(Color.black.opacity(0.5))
+                                .clipShape(.rect(cornerRadius: 25))
+                                .padding(.horizontal)
+                            
+                            ZStack(alignment: .bottom) {
+                                // character image
+                                AsyncImage(url: vm.character.images[0]) {
+                                    Image in
+                                    Image
+                                        .resizable()
+                                        .scaledToFill()
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .frame(width: geo.size.width / 1.1, height: geo.size.height / 1.8)
+                                
+                                // character name
+                                Text(vm.character.name)
+                                    .foregroundStyle(.white)
+                                    .padding(10)
+                                    .frame(maxWidth: .infinity)
+                                    .background(.ultraThinMaterial)
+                            }
+                            .frame(width: geo.size.width / 1.1, height: geo.size.height / 1.8)
+                            .clipShape(.rect(cornerRadius: 50))
+                        case .failure(let error):
+                            Text(error.localizedDescription)
                         }
-                        .frame(width: geo.size.width / 1.1, height: geo.size.height / 1.8)
-                
-                        // character name
-                        Text(vm.character.name)
-                            .foregroundStyle(.white)
-                            .padding(10)
-                            .frame(maxWidth: .infinity)
-                            .background(.ultraThinMaterial)
+                        
+                        Spacer()
                     }
-                    .frame(width: geo.size.width / 1.1, height: geo.size.height / 1.8)
-                    .clipShape(.rect(cornerRadius: 50))
-                    
-                    Spacer()
                     // button
                     Button {
                         Task {
@@ -65,8 +74,8 @@ struct QuoteView: View {
                         Text("Get Random Quotes")
                             .foregroundColor(.white)
                             .padding()
-                            .background(.breakingBadGreen)
-                            .shadow(color: .breakingBadYellow, radius: 5)
+                            .background(Color("\(show.replacingOccurrences(of: " ", with: ""))"+"Button"))
+                            .shadow(color: (Color("\(show.replacingOccurrences(of: " ", with: ""))"+"Shadow")), radius: 5)
                             .clipShape(.rect(cornerRadius: 8))
                     }
                     
