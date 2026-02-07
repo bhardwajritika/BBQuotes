@@ -1,5 +1,5 @@
 //
-//  QuoteView.swift
+//  MainView.swift
 //  BBQuotes
 //
 //  Created by Tarun Sharma on 06/02/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct QuoteView: View {
+struct MainView: View {
     let show: String
     let vm = ViewModel()
     @State var characterInfo = false
@@ -29,7 +29,7 @@ struct QuoteView: View {
                             EmptyView()
                         case .fetching:
                             ProgressView()
-                        case .success:
+                        case .successQuote:
                             Text("  \" \(vm.quotes.quote) \"   ")
                                 .minimumScaleFactor(0.5)
                                 .multilineTextAlignment(.center)
@@ -66,25 +66,49 @@ struct QuoteView: View {
                             .sheet(isPresented: $characterInfo) {
                                 CharacterView(character: vm.character, show: show)
                             }
+                            
+                        case .successEpisode:
+                            EpisodeView(episode: vm.episode)
+                            
                         case .failure(let error):
                             Text(error.localizedDescription)
                         }
                         
-                        Spacer()
+                        Spacer(minLength: 20)
                     }
                     // button
-                    Button {
-                        Task {
-                            await vm.getQuoteData(from: show)
+                    HStack {
+                        Button {
+                            Task {
+                                await vm.getQuoteData(from: show)
+                            }
+                        } label: {
+                            Text("Get Random Quotes")
+                                .font(.title3)
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(Color("\(show.removeSpaces())"+"Button"))
+                                .shadow(color: (Color("\(show.removeSpaces())"+"Shadow")), radius: 5)
+                                .clipShape(.rect(cornerRadius: 8))
                         }
-                    } label: {
-                        Text("Get Random Quotes")
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color("\(show.removeSpaces())"+"Button"))
-                            .shadow(color: (Color("\(show.removeSpaces())"+"Shadow")), radius: 5)
-                            .clipShape(.rect(cornerRadius: 8))
+                        
+                        Spacer()
+                        
+                        Button {
+                            Task {
+                                await vm.getEpisodeData(from: show)
+                            }
+                        } label: {
+                            Text("Get Random Episode")
+                                .font(.title3)
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(Color("\(show.removeSpaces())"+"Button"))
+                                .shadow(color: (Color("\(show.removeSpaces())"+"Shadow")), radius: 5)
+                                .clipShape(.rect(cornerRadius: 8))
+                        }
                     }
+                    .padding(.horizontal,30)
                     
                     Spacer(minLength: 95)
                 }.frame(width: geo.size.width, height: geo.size.height)
@@ -97,6 +121,6 @@ struct QuoteView: View {
 }
 
 #Preview {
-    QuoteView(show: Constants.bbName)
+    MainView(show: Constants.bbName)
         .preferredColorScheme(.dark)
 }
