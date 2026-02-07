@@ -79,8 +79,40 @@ struct CharacterView: View {
                         }
                         //Death
                         
+                        DisclosureGroup("Status : Spoiler alert! ") {
+                            VStack (alignment: .leading) {
+                                // status
+                                Text(character.status)
+                                
+                                if let death = character.death {
+                                    // image
+                                    AsyncImage(url: death.image) {
+                                        Image in
+                                        Image
+                                            .resizable()
+                                            .scaledToFit()
+                                            .clipShape(.rect(cornerRadius: 25))
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                    
+                                    // how
+                                    Text("How: \(death.details)")
+                                        .padding(.bottom, 8)
+                                    
+                                    // last words
+                                    Text("Last words: \(death.lastWords)")
+                                    
+                                }
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .tint(.primary)
+                        
+                        
                     }
                     .frame(width: geo.size.width / 1.25, alignment: .leading)
+                    .padding(50)
                 }
                 .scrollIndicators(.hidden)
             }
@@ -91,4 +123,5 @@ struct CharacterView: View {
 
 #Preview {
     CharacterView(character: ViewModel().character, show: "Breaking Bad")
+        .preferredColorScheme(.dark)
 }
