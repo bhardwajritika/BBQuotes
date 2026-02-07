@@ -23,6 +23,7 @@ class ViewModel {
     
     var quotes: Quote
     var character: Char
+    var episode: Episode
     
     init() {
         let decoder = JSONDecoder()
@@ -36,9 +37,13 @@ class ViewModel {
         let charData = try! Data(contentsOf: charUrl)
         character = try! decoder.decode(Char.self, from: charData)
         
+        let episodeUrl = Bundle.main.url(forResource: "sampleepisode", withExtension: "json")!
+        let episodeData = try! Data(contentsOf: episodeUrl)
+        episode = try! decoder.decode(Episode.self, from: episodeData)
+        
     }
     
-    func getData(from show: String) async {
+    func getQuoteData(from show: String) async {
         status = .fetching
         
         do {
@@ -46,6 +51,21 @@ class ViewModel {
             character = try await fetcher.fetchCharacter(quotes.character)
             character.death = try await fetcher.fetchDeath(for: character.name)
             status = .success
+        } catch {
+            status = .failure(error: error)
+        }
+        
+    }
+    
+    func getEpisodeData(from show: String) async {
+        status = .fetching
+        
+        do {
+            if let unwrappedEpisode = try await fetcher.fetchEpisode(from: show) {
+                episode = unwrappedEpisode
+            }
+                status = .success
+            
         } catch {
             status = .failure(error: error)
         }
