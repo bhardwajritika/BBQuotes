@@ -13,115 +13,122 @@ struct CharacterView: View {
     
     var body: some View {
         GeometryReader { geo in
-            
-            ZStack(alignment: .top) {
-                // Image
-                Image(show.lowercased().replacingOccurrences(of: " ", with: ""))
-                    .resizable()
-                    .scaledToFit( )
-                
-                ScrollView {
-                    TabView {
-                        ForEach(character.images, id: \.self) {
-                            characterImageURL in
-                            // Character Image
-                            AsyncImage(url: characterImageURL) {
-                                image in
-                                image
-                                    .resizable()
-                                    .scaledToFill()
-                                
-                            } placeholder: {
-                                ProgressView()
-                            }
-                        }
-                    }
-                    .tabViewStyle(.page)
-                    .frame(width: geo.size.width / 1.2, height: geo.size.height / 1.7)
-                    .clipShape(.rect(cornerRadius: 25))
-                    .padding(.top, 60)
+            ScrollViewReader { proxy in
+                ZStack(alignment: .top) {
+                    // Image
+                    Image(show.lowercased().replacingOccurrences(of: " ", with: ""))
+                        .resizable()
+                        .scaledToFit( )
                     
-                    VStack (alignment: .leading) {
-                        // Character Name
-                        Text(character.name)
-                            .font(.largeTitle)
-                        // PorterateBy
-                        Text("Portrayed By: \(character.portrayedBy)")
-                            .font(.subheadline)
-                        
-                        Divider()
-                        
-                        // Character Info
-                        Text(character.name + " Character Info")
-                            .font(.title2)
-                        // Birthday
-                        Text("Birthday: \(character.birthday)")
-                        
-                        Divider()
-                        
-                        // Occupations
-                        Text("Occupations: ")
-                            
-                        ForEach(character.occupations, id: \.self) {
-                            occupation in
-                            Text("• \(occupation)")
-                                .font(.subheadline)
-                        }
-                        Divider()
-                        
-                        // Alias
-                        Text("Nicknames: ")
-                        
-                        if character.aliases.count > 0 {
-                            ForEach(character.aliases, id: \.self) {
-                                alias in
-                                Text("• \(alias)")
-                                    .font(.subheadline)
-                            }
-                        } else {
-                            Text("None")
-                                .font(.subheadline)
-                        }
-                        //Death
-                        
-                        DisclosureGroup("Status : Spoiler alert! ") {
-                            VStack (alignment: .leading) {
-                                // status
-                                Text(character.status)
-                                
-                                if let death = character.death {
-                                    // image
-                                    AsyncImage(url: death.image) {
-                                        Image in
-                                        Image
-                                            .resizable()
-                                            .scaledToFit()
-                                            .clipShape(.rect(cornerRadius: 25))
-                                    } placeholder: {
-                                        ProgressView()
-                                    }
+                    ScrollView {
+                        TabView {
+                            ForEach(character.images, id: \.self) {
+                                characterImageURL in
+                                // Character Image
+                                AsyncImage(url: characterImageURL) {
+                                    image in
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
                                     
-                                    // how
-                                    Text("How: \(death.details)")
-                                        .padding(.bottom, 8)
-                                    
-                                    // last words
-                                    Text("Last words: \(death.lastWords)")
-                                    
+                                } placeholder: {
+                                    ProgressView()
                                 }
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
-                        .tint(.primary)
+                        .tabViewStyle(.page)
+                        .frame(width: geo.size.width / 1.2, height: geo.size.height / 1.7)
+                        .clipShape(.rect(cornerRadius: 25))
+                        .padding(.top, 60)
                         
-                        
+                        VStack (alignment: .leading) {
+                            // Character Name
+                            Text(character.name)
+                                .font(.largeTitle)
+                            // PorterateBy
+                            Text("Portrayed By: \(character.portrayedBy)")
+                                .font(.subheadline)
+                            
+                            Divider()
+                            
+                            // Character Info
+                            Text(character.name + " Character Info")
+                                .font(.title2)
+                            // Birthday
+                            Text("Birthday: \(character.birthday)")
+                            
+                            Divider()
+                            
+                            // Occupations
+                            Text("Occupations: ")
+                            
+                            ForEach(character.occupations, id: \.self) {
+                                occupation in
+                                Text("• \(occupation)")
+                                    .font(.subheadline)
+                            }
+                            Divider()
+                            
+                            // Alias
+                            Text("Nicknames: ")
+                            
+                            if character.aliases.count > 0 {
+                                ForEach(character.aliases, id: \.self) {
+                                    alias in
+                                    Text("• \(alias)")
+                                        .font(.subheadline)
+                                }
+                            } else {
+                                Text("None")
+                                    .font(.subheadline)
+                            }
+                            //Death
+                            
+                            DisclosureGroup("Status : Spoiler alert! ") {
+                                VStack (alignment: .leading) {
+                                    // status
+                                    Text(character.status)
+                                    
+                                    if let death = character.death {
+                                        // image
+                                        AsyncImage(url: death.image) {
+                                            Image in
+                                            Image
+                                                .resizable()
+                                                .scaledToFit()
+                                                .clipShape(.rect(cornerRadius: 25))
+                                                .onAppear {
+                                                    withAnimation {
+                                                        proxy.scrollTo(1, anchor: .bottom)
+                                                    }
+                                                }
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
+                                        
+                                        // how
+                                        Text("How: \(death.details)")
+                                            .padding(.bottom, 8)
+                                        
+                                        // last words
+                                        Text("Last words: \(death.lastWords)")
+                                        
+                                    }
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            .tint(.primary)
+                            
+                            
+                        }
+                        .frame(width: geo.size.width / 1.25, alignment: .leading)
+                        .padding(50)
+                        .id(1)
                     }
-                    .frame(width: geo.size.width / 1.25, alignment: .leading)
-                    .padding(50)
+                    .scrollIndicators(.hidden)
                 }
-                .scrollIndicators(.hidden)
+                .ignoresSafeArea(.all)
             }
-            .ignoresSafeArea(.all)
         }
     }
 }
