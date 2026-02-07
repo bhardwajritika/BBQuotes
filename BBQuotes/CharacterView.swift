@@ -16,7 +16,7 @@ struct CharacterView: View {
             ScrollViewReader { proxy in
                 ZStack(alignment: .top) {
                     // Image
-                    Image(show.lowercased().replacingOccurrences(of: " ", with: ""))
+                    Image(show.removeCaseAndSpaces())
                         .resizable()
                         .scaledToFit( )
                     
@@ -134,6 +134,6 @@ struct CharacterView: View {
 }
 
 #Preview {
-    CharacterView(character: ViewModel().character, show: "Breaking Bad")
+    CharacterView(character: ViewModel().character, show: Constants.bbName)
         .preferredColorScheme(.dark)
 }

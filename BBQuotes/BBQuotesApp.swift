@@ -19,10 +19,10 @@ struct BBQuotesApp: App {
 /**
  
  Version2 features:
- - Add ElCamino tab
- - Utlize all character image in the characterview
- - On character view, auto scroll  after status shown
+ - Add ElCamino tab - ✅
+ - Utlize all character image in the characterview - ✅
+ - On character view, auto scroll  after status shown - ✅
  - Fetch episode data
- - Extend string to get rid of long image and color name
- - Create static constant for show names
+ - Extend string to get rid of long image and color name -  ✅
+ - Create static constant for show names - ✅
  */
