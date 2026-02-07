@@ -10,6 +10,7 @@ import SwiftUI
 struct QuoteView: View {
     let show: String
     let vm = ViewModel()
+    @State var characterInfo = false
     
     var body: some View {
         GeometryReader { geo in
@@ -59,6 +60,12 @@ struct QuoteView: View {
                             }
                             .frame(width: geo.size.width / 1.1, height: geo.size.height / 1.8)
                             .clipShape(.rect(cornerRadius: 50))
+                            .onTapGesture {
+                                characterInfo.toggle()
+                            }
+                            .sheet(isPresented: $characterInfo) {
+                                CharacterView(character: vm.character, show: show)
+                            }
                         case .failure(let error):
                             Text(error.localizedDescription)
                         }
