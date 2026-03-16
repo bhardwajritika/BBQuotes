@@ -33,11 +33,11 @@ This project is designed as a **portfolio-grade application** showcasing scalabl
   </tr>
    <tr>
     <td align="center">
-      <img src="./GHScreenshots/AlCaminoRandomQuotes.png" width="250" /><br/>
+      <img src="./BBScreenshots/AlCaminoRandomQuotes.png" width="250" /><br/>
       <b>Al Camino Random Quotes</b>
       </td>
     <td align="center">
-      <img src="./GHScreenshots/AlCamino.png" width="250" /><br/>
+      <img src="./BBScreenshots/AlCamino.png" width="250" /><br/>
       <b>Al Camino Movie Screen</b>
     </td>
   </tr>
